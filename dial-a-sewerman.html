@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Dispatch Reviews</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <link href="https://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
+        <!-- extra style --> 
+    <style type="text/css">
+    #container { margin-left: auto; margin-right: auto; width: 100%;}
+</style>
+
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Dial a Sewerman</h1>
+      <!--<img src="" alt="Air Solutions USA" style="width:12em;height:4em;"> replace logo here  -->
+      <h2 class="project-tagline"></h2>
+      <a href="#" class="btn">Book an Appointment</a>
+      <a href="http://www.dialasewerman.net/contact" class="btn">Contact Us</a>
+      <a href="http://www.dialasewerman.net/" class="btn">Website</a>
+    </section>
+
+    <section class="main-content">
+   <!-- where the content will go --> 
+<div id="container"></div>
+
+<script>
+
+$.get('https://www.periscopedata.com/api/dispatch/chart/csv/f3fa5a97-10c1-0412-bc9c-42607c5223fc', function(data) {
+
+	// start the table	
+	var html = '<table class="table table-bordered">';
+
+	// split into lines
+	var rows = data.split("\n");
+
+	// parse lines
+	rows.forEach( function getvalues(ourrow) {
+
+		// start a table row
+		html += "<tr>";
+
+		// split line into columns
+		var columns = ourrow.split(",");
+		
+		html += "<td>" + columns[0] + "</td>";
+		html += "<td>" + columns[1] + "</td>";
+		html += "<td>" + columns[2] + "</td>";
+		
+		// close row
+		html += "</tr>";		
+	})
+	// close table
+	html += "</table>";
+
+	// insert into div
+	$('#container').append(html);
+	
+});
+</script>
+
+
+      <footer class="site-footer">
+        <span class="site-footer-owner">Powered by <a href="https://dispatch.me">Dispatch</a>.</span>
+
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
