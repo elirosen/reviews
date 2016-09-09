@@ -220,8 +220,8 @@ a {
 
 @media screen and (min-width: 64em) {
   .main-content {
-    max-width: 64rem;
-    padding: 2rem 6rem;
+    max-width: 112rem;
+    padding: 3rem 3rem;
     margin: 0 auto;
     font-size: 1.1rem; } }
 
