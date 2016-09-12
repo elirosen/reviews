@@ -46,10 +46,12 @@ $.get('https://www.periscopedata.com/api/dispatch/chart/csv/130b5241-f985-cd30-5
 
 		// split line into columns
 		var columns = ourrow.split(",");
-		
+	
 		html += "<td>" + columns[0] + "</td>";
 		html += "<td>" + columns[1] + "</td>";
 		html += "<td>" + columns[2] + "</td>";
+		html += "<td>" + columns[3] + "</td>";
+		html += "<td>" + columns[4] + "</td>";
 		
 		// close row
 		html += "</tr>";		
