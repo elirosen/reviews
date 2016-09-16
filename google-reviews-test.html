@@ -35,7 +35,7 @@
 $.get('https://www.periscopedata.com/api/dispatch/chart/csv/f81a5b73-06d4-53fe-c96c-b4cd9c6c916d', function(data) {
 
 	// start the table	
-	var html = '<div class="reviews">';
+	var html = "<div class='reviews'>";
 
 	// split into lines
 	var rows = data.split("\n");
@@ -44,15 +44,18 @@ $.get('https://www.periscopedata.com/api/dispatch/chart/csv/f81a5b73-06d4-53fe-c
 	rows.forEach( function getvalues(ourrow) {
 
 		// start a table row
-		html += "<div itemscope itemtype='www.schema.org/LocalBusiness'>";
+		html += "<div itemscope itemtype='http://schema.org/Review'> <div itemprop='temReviewed' itemscope itemtype='http://schema.org/LocalBusiness'>";
 
 		// split line into columns
 		var columns = ourrow.split(",");
 		
-		html += "<h2 itemprop='reviewRating'>" + columns[0] + "</h2>";
-		html += "<div itemprop='reviewBody'>" + columns[1] + "</div>";
-		html += "<p itemprop='datePublished'>" + columns[2] + "</p>";
-		html += "<p itemprop='author'>" + columns[3] + "</p>";
+		html += "<span itemprop='name' content='" + columns[0] + "'></span></div>";//adds org name to each review (as per Google reqs), but it is not dispalyed
+		html += "<span itemprop='reviewRating' itemscope itemtype='http://schema.org/Rating'> <span itemprop='ratingValue'>" + columns[1] + "</span> <span itemprop='bestRating' content='5'></span> </span>";//The rating number. Sets highest rating to 5.
+		html += "<meta itemprop='datePublished' content='" + columns[2] + "'>" + columns[2] + "<span itemprop='author' itemscope itemtype='http://schema.org/Person'> <img itemprop='image' src='https://cdn1.iconfinder.com/data/icons/user-pictures/100/unknown-512.png' alt='' style='width:30px'/>";//adds the schema.org person type. This always stays the same. Avatar is optional
+		html += "<span itemprop='name'>" + columns[3] + "</span>";//first name of reviewer
+		html += "<span itemprop='familyName'>" + columns[4] + "</span></span>";//Last name of reviewer (first initial only)
+		html += "<span itemprop='reviewBody'>" + columns[5] + "</span> <div itemprop='publisher' itemscope itemtype='http://schema.org/Organization'> <meta itemprop='name' content='Dispatch Technologies'> </div> </div>";//actual review body + closing with google schema for Dispatch as the publisher
+		
 		
 		// close row
 		html += "</div>";		
