@@ -32,6 +32,7 @@
 
 $.get('https://www.periscopedata.com/api/dispatch/chart/csv/95200e7e-3dfd-9d59-ec74-a9a9252f42b6', function(data) {
 
+
 	// start the table	
 	var html = '<table class="table table-bordered">';
 
@@ -50,6 +51,8 @@ $.get('https://www.periscopedata.com/api/dispatch/chart/csv/95200e7e-3dfd-9d59-e
 		html += "<td>" + columns[0] + "</td>";
 		html += "<td>" + columns[1] + "</td>";
 		html += "<td>" + columns[2] + "</td>";
+		html += "<td>" + columns[3] + "</td>";
+		html += "<td>" + columns[4] + "</td>";
 		
 		// close row
 		html += "</tr>";		
