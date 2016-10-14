@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+  <meta charset="UTF-8">
+  <title>Dispatch Ratings</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+  <link rel="stylesheet" type="text/css"  href="stylesheets/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet2.css" media="screen">
+  <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <!-- papaparse for parsing csv-->
+    <script  src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/4.1.2/papaparse.min.js"></script>
+  <link href="https://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
+  <link rel="icon" href="http://www.dispatch.me/favicon.ico">
+  <!-- extra style -->
+  <style type="text/css">
+    #container {
+      margin-left: auto;
+      margin-right: auto;
+      width: 100%;
+    }
+  </style>
+
+</head>
+<body>
+<div class="top-branding">
+  <img src="images/top_logo.png" alt="dispatch ratings" class="img-responsive center-block">
+</div>
+<div class="header-section">
+    <div class="container">
+      <div class="header-box" itemscope itemtype="http://schema.org/LocalBusiness">
+        <div class="dispatch-banner">
+            <img src="images/banner-default.jpeg" alt="airmax" class="img-responsive">
+        </div>
+        <div class="header-info clearfix">
+            <div class="dispatch-logo pull-left">
+              <img itemprop="logo" src="images/logo-default.png" alt="airmax" class="img-responsive center-block" style="width:150px">
+              <div class="ratings-container text-center">
+                  <div class="ratings">
+                      <span class="active">1</span>
+                      <span class="active">2</span>
+                      <span class="active">3</span>
+                      <span class="active">4</span>
+                      <span>5</span>
+                  </div>
+                  <span class="ratings-count"><span class="review-count-number"></span> Reviews</span>
+              </div>
+            </div>
+            <div class="dispatch-info pull-left">
+                <h1><a href="#" itemprop="url" itemprop="name">High Priority Plumbing</a></h1>
+                <h2 class="tagline">HVAC for Your Home and Bussiness</h2>
+                <div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
+                    <span itemprop="streetAddress">3745 Enfield Ave </span>
+                    <span itemprop="addressLocality">Chelmsford</span>
+                    <span itemprop="addressRegion">MA</span>
+                    <span itemprop="telephone">617-580-0607</span>
+                </div>
+                <span class="dispatch-desc" itemprop="description">
+                  Heating & Air Conditioning Services <br>
+                  Charleston West Ashley & Summerville, SC's Top Choice <br>
+                  MAXIMIZE YOUR COMFORT WITH EXPERT INSTALLATION, MAINTENANCE AND REPAIR
+                </span>
+            </div>
+            <div class="dispatch-cta pull-left">
+                <button class="btn btn-lg btn-block btn-cta">Book Now</button>
+            </div>
+        </div>
+      </div>
+    </div>
+</div>
+
+<section class="main-content">
+  <!-- where the content will go -->
+  <div id="container"></div>
+
+  <script>
+
+  var bgColors = [ '#FE9496', '#94C2FC', '#82E48F', '#E6CA84'];
+
+  function randomBg() {
+              var index = Math.floor(Math.random() * (bgColors.length));
+              return bgColors[index];
+  }
+
+    $.get('https://www.periscopedata.com/api/dispatch/chart/csv/3cdb0677-a9b4-7b46-6e7e-eecb9e12619f', function(data) {
+        var html = "";
+        Papa.parse(data, {
+            complete:function(results) {
+                $('.review-count-number').html(results.data.length - 2)
+
+                results.data.forEach(function(columns, index){
+                    //hide for 1st row and last where theres no data
+                    if(index != results.data.length - 1 && index != 0 ) {
+                        // templating
+                        html += "<div class='review-row clearfix'>";
+                        html += "<div class='avatar pull-left'><span class='initials' style='background-color:" + randomBg() +"'>"+ columns[3][0] + '' + columns[4][0] +"</span></div>";
+                        html += "<div class='review-wrap pull-left'>";
+                        html += "<div class='review-box clearfix' itemscope itemtype='http://schema.org/Review'>";
+                        html += "<div itemprop='itemReviewed' class='item-name' itemscope itemtype='http://schema.org/LocalBusiness'>";
+                        html += "<span itemprop='name'>"+ columns[0] +"</span></div>";
+                        html += "<div class='review-header clearfix'>";
+                        html += "<div class='ratings inline-block'><span class='" +  (columns[0] > 1 ? 'active' : '') +"'></span><span class='" + (columns[0] > 2 ? 'active' : '') +"'></span><span class='" +  (columns[0] > 3 ? 'active' : '') +"'></span><span class='" +  (columns[0] > 4 ? 'active' : '') +"'></span><span class='" +  (columns[0] >= 5 ? 'active' : '') +"'></span></div>";
+                        html += "<div itemprop='author' class='inline-block font-18' itemscope='' itemtype='http://schema.org/Person'>";
+                        html += " <span itemprop='name'>"+ columns[3] + " "+ columns[4][0] + "." + "</span></div>";
+                        html += "<div class='inline-block review-date pull-right font-18'>";
+                        html += "<time itemprop='datePublished' datetime='" + columns[2] +"'></time><span>" + columns[2] +"</span></div></div>";
+                        html += "<div class='font-16' itemprop='reviewRating'  itemscope='' itemtype='http://schema.org/Rating'>";
+                        html += "<span class='hidden' itemprop='ratingValue'>" + columns[0] +"</span>";
+                        html += "<span itemprop='description'>" + columns[1] +"</span>";
+                        html +="</div></div></div></div>";
+                    }
+                });
+            }
+        });
+
+      // insert into div
+      $('#container').append(html);
+
+    });
+  </script>
+
+
+  <footer class="site-footer">
+    <span class="site-footer-owner">Powered by <a href="http://dispatch.me">Dispatch</a>.</span>
+
+  </footer>
+
+</section>
+
+
+</body>
+</html>
