@@ -99,7 +99,7 @@
                         html += "<div itemprop='itemReviewed' class='item-name' itemscope itemtype='http://schema.org/LocalBusiness'>";
                         html += "<span itemprop='name'>"+ columns[0] +"</span></div>";
                         html += "<div class='review-header clearfix'>";
-                        html += "<div class='ratings inline-block'><span class='" +  (columns[0] > 1 ? 'active' : '') +"'></span><span class='" + (columns[0] > 2 ? 'active' : '') +"'></span><span class='" +  (columns[0] > 3 ? 'active' : '') +"'></span><span class='" +  (columns[0] > 4 ? 'active' : '') +"'></span><span class='" +  (columns[0] >= 5 ? 'active' : '') +"'></span></div>";
+                        html += "<div class='ratings inline-block'><span class='" +  (columns[0] > 1 ? 'active' : '') +"'></span><span class='" + (columns[0] > 2 ? 'active' : '') +"'></span><span class='" +  (columns[0] > 3 ? 'active' : '') +"'></span><span class='" +  (columns[0] >= 4 ? 'active' : '') +"'></span><span class='" +  (columns[0] >= 5 ? 'active' : '') +"'></span></div>";
                         html += "<div itemprop='author' class='inline-block font-18' itemscope='' itemtype='http://schema.org/Person'>";
                         html += " <span itemprop='name'>"+ columns[3] + " "+ columns[4][0] + "." + "</span></div>";
                         html += "<div class='inline-block review-date pull-right font-18'>";
