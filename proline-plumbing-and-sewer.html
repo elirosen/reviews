@@ -158,7 +158,7 @@ onClick="parent.open('https://www.facebook.com/ProlinePlumbing/')">Contact Us</b
 
 <script>
 
-var bgColors = [ '#FE9496', '#94C2FC', '#82E48F', '#E6CA84', ‘#B56DDF’];
+var bgColors = [ '#FE9496', '#94C2FC', '#82E48F', '#E6CA84', '#B56DDF’];
 
 function randomBg() {
 
@@ -169,15 +169,10 @@ return bgColors[index];
 }
 
 $.get('https://www.periscopedata.com/api/dispatch/chart/csv/dc22c5f8-c627-19f5-7b47-278efbd0a931', function(data) {
-
 var html = "";
-
 Papa.parse(data, {
-
 complete:function(results) {
-
 $('.review-count-number').html(results.data.length - 2)
-
 results.data.forEach(function(columns, index){
 
 //hide for 1st row and last where theres no data
@@ -187,20 +182,10 @@ if(index != results.data.length - 1 && index != 0 ) {
 // templating
 
 html += "<div class='review-row clearfix'>";
-
 html += "<div class='avatar pull-left'><span class='initials'
+style='background-color:" + randomBg() +"'>"+ columns[3][0] + '' + columns[4][0] +"</span></div>"; html += "<div class='review-wrap pull-left'>"; html += "<div class='review-box clearfix' itemscope
 
-style='background-color:" + randomBg() +"'>"+ columns[3][0] + '' + columns[4][0]
-
-+"</span></div>";
-
-html += "<div class='review-wrap pull-left'>";
-
-html += "<div class='review-box clearfix' itemscope
-
-itemtype='http://schema.org/Review'>";
-
-html += "<div itemprop='itemReviewed' class='item-name' itemscope
+itemtype='http://schema.org/Review'>"; html += "<div itemprop='itemReviewed' class='item-name' itemscope
 
 itemtype='http://schema.org/LocalBusiness'>";
 
