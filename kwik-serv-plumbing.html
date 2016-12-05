@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+  <meta charset="UTF-8">
+  <title>Dispatch Ratings for Kwik Serv Plumbing</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" href="stylesheets/normalize2.css" media="screen">
+  <link rel="stylesheet" type="text/css"  href="stylesheets/bootstrap.min2.css">
+  <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet2.css" media="screen">
+  <link rel="stylesheet" type="text/css" href="stylesheets/github-light2.css" media="screen">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <!-- papaparse for parsing csv-->
+    <script  src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/4.1.2/papaparse.min.js"></script>
+  <link href="https://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
+  <link rel="icon" href="http://www.dispatch.me/favicon.ico">
+  <!-- extra style -->
+  <style type="text/css">
+    #container {
+      margin-left: auto;
+      margin-right: auto;
+      width: 100%;
+    }
+  </style>
+
+</head>
+<body>
+<div class="top-branding">
+  <img src="images/top_logo.png" alt="dispatch ratings" class="img-responsive center-block">
+</div>
+<div class="header-section">
+    <div class="container">
+      <div class="header-box" itemscope itemtype="http://schema.org/LocalBusiness">
+        <div class="dispatch-banner">
+            <img src="https://scontent-ord1-1.xx.fbcdn.net/v/t1.0-9/14695511_1254704474572138_3159671525338862540_n.png?oh=23b6f49f5033c904ea64ba38a7235f60&oe=58C60883" alt="airmax" class="img-responsive" style="width:100%" style="max-height:300px">
+        </div>
+        <div class="header-info clearfix">
+            <div class="dispatch-logo pull-left">
+              <img itemprop="logo" src="https://scontent-ord1-1.xx.fbcdn.net/v/t1.0-1/p480x480/14656252_1254702107905708_5593810654911319108_n.png?oh=c3f360f708fec3cc33d9d77a0a265896&oe=58B88F44" class="img-responsive center-block" style="width:150px" style=”height:150px”>
+              <div class="ratings-container text-center">
+                  <div class="ratings">
+                      <span class="active">1</span>
+                      <span class="active">2</span>
+                      <span class="active">3</span>
+                      <span class="active">4</span>
+                      <span>5</span>
+                  </div>
+                  <span class="ratings-count"><span class="review-count-number"></span> Reviews</span>
+              </div>
+            </div>
+            <div class="dispatch-info pull-left">
+                <h1><a href="#" itemprop="url" itemprop="name">Kwik Serv Plumbing</a></h1>
+                <h2 class="tagline">For the best in residential and commercial plumbing and heating services, the only name that you need to know is Kwik Serv Plumbing.</h2>
+                <div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
+                    <span itemprop="streetAddress">118 N Main St #8 </span>
+                    <span itemprop="addressLocality">Wauconda</span>
+                    <span itemprop="addressRegion">IL</span>
+                    <span itemprop="telephone">(847) 957-3000</span>
+                </div>
+                <span class="dispatch-desc" itemprop="description">
+					We are available to you 24 hours a day, 7 days a week because we want to be there for you when you need us the most. Our driving force is taking care of our customers, which means we go above and beyond when it comes to addressing your service needs.
+
+We take it a step further by truly backing up the work, parts and pricing we offer to our clients with a variety of guarantees. We want you to be able to feel 100% secure about working with us beforehand and 100% satisfied once we have completed the work. Don’t take chances when it comes to something as important of your plumbing; let our pros take care of the job for you.
+                </span>
+            </div>
+            <div class="dispatch-cta pull-left">
+                <button class="btn btn-lg btn-block btn-cta" onClick="window.open('http://192.185.188.14/~devkwikservplumb/estimate/')">Book Now</button>
+            </div>
+        </div>
+      </div>
+    </div>
+</div>
+
+<section class="main-content">
+  <!-- where the content will go -->
+  <div id="container"></div>
+
+  <script>
+
+  var bgColors = [ '#FE9496', '#94C2FC', '#82E48F', '#E6CA84'];
+
+  function randomBg() {
+              var index = Math.floor(Math.random() * (bgColors.length));
+              return bgColors[index];
+  }
+
+    $.get('https://www.periscopedata.com/api/dispatch/chart/csv/85c7860e-a66e-46f8-d1f8-e6fd6617b25b', function(data) {
+        var html = "";
+        Papa.parse(data, {
+            complete:function(results) {
+                $('.review-count-number').html(results.data.length - 2)
+
+                results.data.forEach(function(columns, index){
+                    //hide for 1st row and last where theres no data
+                    if(index != results.data.length - 1 && index != 0 ) {
+                        // templating
+                        html += "<div class='review-row clearfix'>";
+                        html += "<div class='avatar pull-left'><span class='initials' style='background-color:" + randomBg() +"'>"+ columns[3][0] + '' + columns[4][0] +"</span></div>";
+                        html += "<div class='review-wrap pull-left'>";
+                        html += "<div class='review-box clearfix' itemscope itemtype='http://schema.org/Review'>";
+                        html += "<div itemprop='itemReviewed' class='item-name' itemscope itemtype='http://schema.org/LocalBusiness'>";
+                        html += "<span itemprop='name'>"+ columns[0] +"</span></div>";
+                        html += "<div class='review-header clearfix'>";
+                        html += "<div class='ratings inline-block'><span class='" +  (columns[0] > 1 ? 'active' : '') +"'></span><span class='" + (columns[0] > 2 ? 'active' : '') +"'></span><span class='" +  (columns[0] > 3 ? 'active' : '') +"'></span><span class='" +  (columns[0] >= 4 ? 'active' : '') +"'></span><span class='" +  (columns[0] >= 5 ? 'active' : '') +"'></span></div>";
+                        html += "<div itemprop='author' class='inline-block font-18' itemscope='' itemtype='http://schema.org/Person'>";
+                        html += " <span itemprop='name'>"+ columns[3] + " "+ columns[4][0] + "." + "</span></div>";
+                        html += "<div class='inline-block review-date pull-right font-18'>";
+                        html += "<time itemprop='datePublished' datetime='" + columns[2] +"'></time><span>" + columns[2] +"</span></div></div>";
+                        html += "<div class='font-16' itemprop='reviewRating'  itemscope='' itemtype='http://schema.org/Rating'>";
+                        html += "<span class='hidden' itemprop='ratingValue'>" + columns[0] +"</span>";
+                        html += "<span itemprop='description'>" + columns[1] +"</span>";
+                        html +="</div></div></div></div>";
+                    }
+                });
+            }
+        });
+
+      // insert into div
+      $('#container').append(html);
+
+    });
+  </script>
+
+
+  <footer class="site-footer">
+    <span class="site-footer-owner">Powered by <a href="http://dispatch.me">Dispatch</a>.</span>
+
+  </footer>
+
+</section>
+
+
+</body>
+</html>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-44476010-14', 'auto');
+  ga('send', 'pageview');
+
+</script>
