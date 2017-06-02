@@ -1,80 +1,141 @@
 <!DOCTYPE html>
 <html lang="en-us">
-  <head>
-    <meta charset="UTF-8">
-    <title>Dispatch Reviews</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <link href="https://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
-        <!-- extra style --> 
-    <style type="text/css">
-    #container { margin-left: auto; margin-right: auto; width: 100%;}
-</style>
+<head>
+  <meta charset="UTF-8">
+  <title>Dispatch Ratings for Ellsworth Plumbing</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" href="stylesheets/normalize2.css" media="screen">
+  <link rel="stylesheet" type="text/css"  href="stylesheets/bootstrap.min2.css">
+  <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet2.css" media="screen">
+  <link rel="stylesheet" type="text/css" href="stylesheets/github-light2.css" media="screen">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <!-- papaparse for parsing csv-->
+    <script  src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/4.1.2/papaparse.min.js"></script>
+  <link href="https://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
+  <link rel="icon" href="http://www.dispatch.me/favicon.ico">
+  <!-- extra style -->
+  <style type="text/css">
+    #container {
+      margin-left: auto;
+      margin-right: auto;
+      width: 100%;
+    }
+  </style>
 
-  </head>
-  <body>
-    <section class="page-header">
-      <h1 class="project-name">AAR Mechanical</h1>
-      <h2 class="project-tagline"></h2>
-      <a href="#" class="btn">Book an Appointment</a>
-      <a href="#" class="btn">Contact Us</a>
-      <a href="#" class="btn">Website</a>
-    </section>
+</head>
+<body>
+<div class="top-branding">
+  <img src="images/top_logo.png" alt="dispatch ratings" class="img-responsive center-block">
+</div>
+<div class="header-section">
+    <div class="container">
+      <div class="header-box" itemscope itemtype="http://schema.org/LocalBusiness">
+        <div class="dispatch-banner">
+            <img src="images/banner-default.png" alt="airmax" class="img-responsive" style="width:100%" style="max-height:300px">
+        </div>
+        <div class="header-info clearfix">
+            <div class="dispatch-logo pull-left">
+              <img itemprop="logo" src="images/ellsworth-logo.jpg" class="img-responsive center-block" style="width:150px" style=”height:150px”>
+              <div class="ratings-container text-center">
+                  <div class="ratings">
+                      <span class="active">1</span>
+                      <span class="active">2</span>
+                      <span class="active">3</span>
+                      <span class="active">4</span>
+                      <span>5</span>
+                  </div>
+                  <span class="ratings-count"><span class="review-count-number"></span> Reviews</span>
+              </div>
+            </div>
+            <div class="dispatch-info pull-left">
+                <h1><a href="#" itemprop="url" itemprop="name">Ellsworth Plumbing</a></h1>
+                <h2 class="tagline">Nobody does it better than us!</h2>
+                <div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
+                    <span itemprop="streetAddress">3605 Turnpike Rd </span>
+                    <span itemprop="addressLocality">Portsmouth</span>
+                    <span itemprop="addressRegion">VA</span>
+                    <span itemprop="telephone">7573978431</span>
+                </div>
+                <span class="dispatch-desc" itemprop="description">
+					Ellsworth Plumbing has been in the plumbing and heating business for more than 100 years. We are family owned and operated. There has been 5 generations of family running the business.
+                </span>
+            </div>
+            <div class="dispatch-cta pull-left">
+                <button class="btn btn-lg btn-block btn-cta" onClick="window.open('#')">Book Now!</button>
+            </div>
+        </div>
+      </div>
+    </div>
+</div>
 
-    <section class="main-content">
-   <!-- where the content will go --> 
-<div id="container"></div>
-<iframe src="https://app.periscopedata.com/shared/c46a91a2-11c6-499f-8f9e-5dbbb64412e4?embed=v2" height="1000" width="100%"></iframe>
+<section class="main-content">
+  <!-- where the content will go -->
+  <div id="container"></div>
 
-<!--	    
-<script>
+  <script>
 
-$.get('https://www.periscopedata.com/api/dispatch/chart/csv/130b5241-f985-cd30-56ab-522e0c2cd27a', function(data) {
+  var bgColors = [ '#FE9496', '#94C2FC', '#82E48F', '#E6CA84'];
 
-	// start the table	
-	var html = '<table class="table table-bordered">';
+  function randomBg() {
+              var index = Math.floor(Math.random() * (bgColors.length));
+              return bgColors[index];
+  }
 
-	// split into lines
-	var rows = data.split("\n");
+    $.get('https://www.periscopedata.com/api/dispatch/chart/csv/2aaba503-668e-6e68-7888-a8a3fe0f7947', function(data) {
+        var html = "";
+        Papa.parse(data, {
+            complete:function(results) {
+                $('.review-count-number').html(results.data.length - 2)
 
-	// parse lines
-	rows.forEach( function getvalues(ourrow) {
+                results.data.forEach(function(columns, index){
+                    //hide for 1st row and last where theres no data
+                    if(index != results.data.length - 1 && index != 0 ) {
+                        // templating
+                        html += "<div class='review-row clearfix'>";
+                        html += "<div class='avatar pull-left'><span class='initials' style='background-color:" + randomBg() +"'>"+ columns[3][0] + '' + columns[4][0] +"</span></div>";
+                        html += "<div class='review-wrap pull-left'>";
+                        html += "<div class='review-box clearfix' itemscope itemtype='http://schema.org/Review'>";
+                        html += "<div itemprop='itemReviewed' class='item-name' itemscope itemtype='http://schema.org/LocalBusiness'>";
+                        html += "<span itemprop='name'>"+ columns[0] +"</span></div>";
+                        html += "<div class='review-header clearfix'>";
+                        html += "<div class='ratings inline-block'><span class='" +  (columns[0] > 1 ? 'active' : '') +"'></span><span class='" + (columns[0] > 2 ? 'active' : '') +"'></span><span class='" +  (columns[0] > 3 ? 'active' : '') +"'></span><span class='" +  (columns[0] >= 4 ? 'active' : '') +"'></span><span class='" +  (columns[0] >= 5 ? 'active' : '') +"'></span></div>";
+                        html += "<div itemprop='author' class='inline-block font-18' itemscope='' itemtype='http://schema.org/Person'>";
+                        html += " <span itemprop='name'>"+ columns[3] + " "+ columns[4][0] + "." + "</span></div>";
+                        html += "<div class='inline-block review-date pull-right font-18'>";
+                        html += "<time itemprop='datePublished' datetime='" + columns[2] +"'></time><span>" + columns[2] +"</span></div></div>";
+                        html += "<div class='font-16' itemprop='reviewRating'  itemscope='' itemtype='http://schema.org/Rating'>";
+                        html += "<span class='hidden' itemprop='ratingValue'>" + columns[0] +"</span>";
+                        html += "<span itemprop='description'>" + columns[1] +"</span>";
+                        html +="</div></div></div></div>";
+                    }
+                });
+            }
+        });
 
-		// start a table row
-		html += "<tr>";
+      // insert into div
+      $('#container').append(html);
 
-		// split line into columns
-		var columns = ourrow.split(",");
-	
-		html += "<td>" + columns[0] + "</td>";
-		html += "<td>" + columns[1] + "</td>";
-		html += "<td>" + columns[2] + "</td>";
-		html += "<td>" + columns[3] + "</td>";
-		html += "<td>" + columns[4] + "</td>";
-		
-		// close row
-		html += "</tr>";		
-	})
-	// close table
-	html += "</table>";
+    });
+  </script>
 
-	// insert into div
-	$('#container').append(html);
-	
-});
-</script>
--->
 
-      <footer class="site-footer">
-        <span class="site-footer-owner"><a href="https://github.com/elirosen/reviews">Reviews</a> is maintained by <a href="https://github.com/elirosen">elirosen</a>.</span>
+  <footer class="site-footer">
+    <span class="site-footer-owner">Powered by <a href="http://dispatch.me">Dispatch</a>.</span>
 
-      </footer>
+  </footer>
 
-    </section>
+</section>
 
-  
-  </body>
+
+</body>
 </html>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-44476010-14', 'auto');
+  ga('send', 'pageview');
+
+</script>
